@@ -1,6 +1,7 @@
 {
   "name": "quotex-usa",
   "version": "1.0.0",
+  "description": "Quotex USA App",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
