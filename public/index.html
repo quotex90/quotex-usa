@@ -1,235 +1,223 @@
-export default function QuotexUSA() {
-  const assets = [
-    { pair: 'BTC/USD', price: '68,420.50', change: '+2.14%' },
-    { pair: 'ETH/USD', price: '3,520.22', change: '+1.82%' },
-    { pair: 'EUR/USD', price: '1.0821', change: '-0.34%' },
-    { pair: 'GBP/USD', price: '1.2740', change: '+0.66%' },
-  ];
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quotex USA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  const candles = [40, 60, 35, 80, 45, 90, 50, 75, 55, 100, 65, 85];
+  <style>
+    body{
+      margin:0;
+      font-family:Arial;
+      background:#0B1220;
+      color:white;
+    }
 
-  return (
-    <div className="min-h-screen bg-[#0B1220] text-white p-4">
-      <div className="max-w-md mx-auto">
+    .container{
+      max-width:420px;
+      margin:auto;
+      padding:15px;
+    }
 
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-green-400">Quotex USA</h1>
-            <p className="text-gray-400 text-sm">Professional Trading Dashboard</p>
-          </div>
+    .card{
+      background:#111827;
+      border-radius:20px;
+      padding:20px;
+      margin-bottom:15px;
+    }
 
-          <div className="bg-[#111827] px-4 py-2 rounded-2xl border border-gray-700">
-            <p className="text-xs text-gray-400">UID</p>
-            <p className="font-bold">QTX928173</p>
-          </div>
-        </div>
+    .title{
+      color:#22c55e;
+      font-size:32px;
+      font-weight:bold;
+    }
 
-        <div className="grid grid-cols-2 gap-4 mb-5">
-          <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 shadow-xl">
-            <p className="text-gray-400 text-sm">Live Balance</p>
-            <h2 className="text-3xl font-bold text-green-400 mt-2">$0.00</h2>
-          </div>
+    .balance{
+      font-size:30px;
+      color:#22c55e;
+      font-weight:bold;
+    }
 
-          <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 shadow-xl">
-            <p className="text-gray-400 text-sm">Demo Balance</p>
-            <h2 className="text-3xl font-bold text-blue-400 mt-2">$10,000</h2>
-          </div>
-        </div>
+    .btn{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:15px;
+      color:white;
+      font-size:18px;
+      font-weight:bold;
+      margin-top:10px;
+    }
 
-        <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 mb-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">Trading Market</h2>
+    .green{
+      background:#22c55e;
+    }
 
-            <div className="flex gap-2">
-              <button className="bg-green-500 px-4 py-2 rounded-xl text-sm font-semibold">
-                Live
-              </button>
+    .red{
+      background:#ef4444;
+    }
 
-              <button className="bg-gray-700 px-4 py-2 rounded-xl text-sm font-semibold">
-                Demo
-              </button>
-            </div>
-          </div>
+    .blue{
+      background:#3b82f6;
+    }
 
-          <div className="bg-[#0B1220] rounded-2xl p-4 border border-gray-800">
-            <div className="flex justify-between mb-5">
-              <div>
-                <h3 className="text-xl font-bold">BTC/USD</h3>
-                <p className="text-green-400">$68,420.50</p>
-              </div>
+    .market{
+      background:#0B1220;
+      padding:15px;
+      border-radius:15px;
+      margin-top:15px;
+    }
 
-              <div className="text-right">
-                <p className="text-sm text-gray-400">Profit</p>
-                <p className="text-green-400 font-bold">+92%</p>
-              </div>
-            </div>
+    .chart{
+      display:flex;
+      align-items:flex-end;
+      gap:6px;
+      height:180px;
+      margin-top:20px;
+    }
 
-            <div className="h-48 bg-[#111827] rounded-2xl flex items-end justify-center gap-2 p-4 overflow-hidden">
-              {candles.map((height, index) => (
-                <div
-                  key={index}
-                  className={`w-4 rounded-full ${
-                    index % 2 === 0 ? 'bg-green-500' : 'bg-red-500'
-                  }`}
-                  style={{ height: `${height}%` }}
-                />
-              ))}
-            </div>
+    .bar{
+      width:18px;
+      border-radius:10px;
+    }
 
-            <div className="grid grid-cols-2 gap-4 mt-5">
-              <button className="bg-green-500 hover:bg-green-600 transition-all py-4 rounded-2xl text-xl font-bold shadow-lg">
-                BUY / UP
-              </button>
+    .greenbar{
+      background:#22c55e;
+    }
 
-              <button className="bg-red-500 hover:bg-red-600 transition-all py-4 rounded-2xl text-xl font-bold shadow-lg">
-                SELL / DOWN
-              </button>
-            </div>
-          </div>
-        </div>
+    .redbar{
+      background:#ef4444;
+    }
 
-        <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 mb-5">
-          <h2 className="text-lg font-bold mb-4">Market Assets</h2>
+    .asset{
+      background:#0B1220;
+      padding:15px;
+      border-radius:15px;
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+    }
 
-          <div className="space-y-3">
-            {assets.map((asset, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between bg-[#0B1220] p-4 rounded-2xl border border-gray-800"
-              >
-                <div>
-                  <p className="font-bold">{asset.pair}</p>
-                  <p className="text-sm text-gray-400">Live Market</p>
-                </div>
+    .qr{
+      width:180px;
+      border-radius:20px;
+      margin-top:15px;
+    }
 
-                <div className="text-right">
-                  <p className="font-bold">{asset.price}</p>
-                  <p
-                    className={`${
-                      asset.change.includes('-')
-                        ? 'text-red-400'
-                        : 'text-green-400'
-                    }`}
-                  >
-                    {asset.change}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    .bottom{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:#111827;
+      display:flex;
+      justify-content:space-around;
+      padding:12px;
+    }
 
-        {/* Deposit Section */}
+    .bottom button{
+      background:none;
+      border:none;
+      color:white;
+      font-size:14px;
+    }
+  </style>
+</head>
 
-        <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 mb-5">
-          <h2 className="text-xl font-bold mb-4 text-green-400">
-            USDT TRX Deposit
-          </h2>
+<body>
 
-          <div className="bg-[#0B1220] rounded-2xl p-4 border border-gray-800 text-center">
-            <img
-              src="/trxqr.png"
-              alt="TRX QR"
-              className="w-44 mx-auto rounded-2xl mb-4"
-            />
+<div class="container">
 
-            <p className="text-sm text-gray-400 mb-2">
-              USDT TRC20 Wallet Address
-            </p>
+  <div class="card">
+    <div class="title">Quotex USA</div>
+    <p>Professional Trading Dashboard</p>
 
-            <p className="text-green-400 break-all font-bold">
-              TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
-            </p>
-          </div>
-        </div>
+    <p>UID: QTX928173</p>
 
-        {/* Withdraw + Referral */}
+    <p>Live Balance</p>
+    <div class="balance">$0.00</div>
+  </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-5">
-          <button className="bg-[#111827] border border-gray-800 rounded-2xl p-5 text-left hover:border-red-500 transition-all">
-            <p className="text-gray-400 text-sm">Withdraw</p>
-            <h3 className="text-xl font-bold mt-2">USDT Withdraw</h3>
-          </button>
+  <div class="card">
+    <h2>Trading Market</h2>
 
-          <button className="bg-[#111827] border border-gray-800 rounded-2xl p-5 text-left hover:border-yellow-500 transition-all">
-            <p className="text-gray-400 text-sm">Referral</p>
-            <h3 className="text-xl font-bold mt-2">Invite & Earn</h3>
-            <p className="text-green-400 mt-2">$0.10 Per Invite</p>
-          </button>
-        </div>
+    <div class="market">
 
-        {/* Ad Reward */}
+      <h2>BTC/USD</h2>
+      <p>$68,420.50</p>
 
-        <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 mb-5">
-          <h2 className="text-lg font-bold mb-4">Ads Reward System</h2>
-
-          <a
-            href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0"
-            target="_blank"
-            className="block w-full bg-green-500 hover:bg-green-600 transition-all py-4 rounded-2xl font-bold text-lg text-center"
-          >
-            Watch Ads & Earn
-          </a>
-
-          <div className="mt-4 bg-[#0B1220] rounded-2xl p-4 border border-gray-800">
-            <p className="text-gray-400 text-sm">Daily Reward Progress</p>
-
-            <div className="w-full bg-gray-700 rounded-full h-4 mt-3 overflow-hidden">
-              <div className="bg-green-500 h-4 w-[1%] rounded-full"></div>
-            </div>
-
-            <p className="text-green-400 mt-3 font-bold">
-              1 / 100 Completed
-            </p>
-          </div>
-        </div>
-
-        {/* Customer Support */}
-
-        <div className="bg-[#111827] rounded-3xl p-5 border border-gray-800 mb-24">
-          <h2 className="text-lg font-bold mb-4">Customer Support</h2>
-
-          <div className="space-y-3">
-            <a
-              href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a"
-              target="_blank"
-              className="block w-full bg-green-500 py-4 rounded-2xl font-bold text-lg hover:bg-green-600 transition-all text-center"
-            >
-              WhatsApp Support
-            </a>
-
-            <button className="w-full bg-blue-500 py-4 rounded-2xl font-bold text-lg hover:bg-blue-600 transition-all">
-              Telegram Support
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom Navigation */}
-
-        <div className="fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-800 p-4">
-          <div className="max-w-md mx-auto flex justify-between text-sm">
-            <button className="flex flex-col items-center text-green-400 font-bold">
-              <span>🏠</span>
-              Home
-            </button>
-
-            <button className="flex flex-col items-center text-gray-400">
-              <span>📈</span>
-              Trade
-            </button>
-
-            <button className="flex flex-col items-center text-gray-400">
-              <span>💰</span>
-              Wallet
-            </button>
-
-            <button className="flex flex-col items-center text-gray-400">
-              <span>👤</span>
-              Profile
-            </button>
-          </div>
-        </div>
+      <div class="chart">
+        <div class="bar greenbar" style="height:40%"></div>
+        <div class="bar redbar" style="height:70%"></div>
+        <div class="bar greenbar" style="height:50%"></div>
+        <div class="bar redbar" style="height:90%"></div>
+        <div class="bar greenbar" style="height:60%"></div>
+        <div class="bar redbar" style="height:100%"></div>
+        <div class="bar greenbar" style="height:70%"></div>
       </div>
+
+      <button class="btn green">BUY / UP</button>
+      <button class="btn red">SELL / DOWN</button>
+
     </div>
-  );
-}
+  </div>
+
+  <div class="card">
+    <h2>Market Assets</h2>
+
+    <div class="asset">
+      <div>BTC/USD</div>
+      <div style="color:#22c55e">+2.14%</div>
+    </div>
+
+    <div class="asset">
+      <div>ETH/USD</div>
+      <div style="color:#22c55e">+1.82%</div>
+    </div>
+
+    <div class="asset">
+      <div>EUR/USD</div>
+      <div style="color:red">-0.34%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>USDT TRX Deposit</h2>
+
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy" class="qr">
+
+    <p>
+      TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Ads Reward System</h2>
+
+    <a href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0">
+      <button class="btn green">Watch Ads & Earn</button>
+    </a>
+
+    <p>1 / 100 Completed</p>
+  </div>
+
+  <div class="card">
+    <h2>Customer Support</h2>
+
+    <a href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a">
+      <button class="btn green">WhatsApp Support</button>
+    </a>
+
+    <button class="btn blue">Telegram Support</button>
+  </div>
+
+</div>
+
+<div class="bottom">
+  <button>🏠 Home</button>
+  <button>📈 Trade</button>
+  <button>💰 Wallet</button>
+  <button>👤 Profile</button>
+</div>
+
+</body>
+</html>
