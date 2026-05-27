@@ -8,7 +8,7 @@
     body{
       margin:0;
       font-family:Arial;
-      background:#0B1220;
+      background:#07111f;
       color:white;
     }
 
@@ -16,6 +16,7 @@
       max-width:420px;
       margin:auto;
       padding:15px;
+      padding-bottom:100px;
     }
 
     .card{
@@ -32,7 +33,7 @@
     }
 
     .balance{
-      font-size:30px;
+      font-size:32px;
       color:#22c55e;
       font-weight:bold;
     }
@@ -46,6 +47,7 @@
       font-size:18px;
       font-weight:bold;
       margin-top:10px;
+      cursor:pointer;
     }
 
     .green{
@@ -60,8 +62,12 @@
       background:#3b82f6;
     }
 
+    .yellow{
+      background:#f59e0b;
+    }
+
     .market{
-      background:#0B1220;
+      background:#07111f;
       padding:15px;
       border-radius:15px;
       margin-top:15px;
@@ -89,7 +95,7 @@
     }
 
     .asset{
-      background:#0B1220;
+      background:#07111f;
       padding:15px;
       border-radius:15px;
       margin-top:10px;
@@ -112,6 +118,7 @@
       display:flex;
       justify-content:space-around;
       padding:12px;
+      border-top:1px solid #333;
     }
 
     .bottom button{
@@ -119,7 +126,23 @@
       border:none;
       color:white;
       font-size:14px;
+      cursor:pointer;
     }
+
+    .hidden{
+      display:none;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:none;
+      margin-top:10px;
+      background:#07111f;
+      color:white;
+    }
+
   </style>
 </head>
 
@@ -134,7 +157,7 @@
     <p>UID: QTX928173</p>
 
     <p>Live Balance</p>
-    <div class="balance">$0.00</div>
+    <div class="balance" id="balance">$100.00</div>
   </div>
 
   <div class="card">
@@ -155,8 +178,9 @@
         <div class="bar greenbar" style="height:70%"></div>
       </div>
 
-      <button class="btn green">BUY / UP</button>
-      <button class="btn red">SELL / DOWN</button>
+      <button class="btn green" onclick="buyTrade()">BUY / UP</button>
+
+      <button class="btn red" onclick="sellTrade()">SELL / DOWN</button>
 
     </div>
   </div>
@@ -188,36 +212,153 @@
     <p>
       TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
     </p>
+
+    <button class="btn blue" onclick="copyAddress()">
+      Copy Address
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>Withdraw</h2>
+
+    <input type="text" placeholder="Enter USDT Address">
+
+    <input type="number" placeholder="Enter Amount">
+
+    <button class="btn yellow" onclick="withdrawMoney()">
+      Withdraw Now
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>Referral System</h2>
+
+    <p>Your Referral Bonus:</p>
+
+    <h1 id="refBonus">$0.00</h1>
+
+    <button class="btn green" onclick="inviteFriend()">
+      Invite & Earn
+    </button>
   </div>
 
   <div class="card">
     <h2>Ads Reward System</h2>
 
-    <a href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0">
-      <button class="btn green">Watch Ads & Earn</button>
+    <a href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0" target="_blank">
+      <button class="btn green" onclick="watchAds()">
+        Watch Ads & Earn
+      </button>
     </a>
 
-    <p>1 / 100 Completed</p>
+    <p id="adsCounter">0 / 100 Completed</p>
   </div>
 
   <div class="card">
     <h2>Customer Support</h2>
 
-    <a href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a">
-      <button class="btn green">WhatsApp Support</button>
+    <a href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a" target="_blank">
+      <button class="btn green">
+        WhatsApp Support
+      </button>
     </a>
 
-    <button class="btn blue">Telegram Support</button>
+    <button class="btn blue">
+      Telegram Support
+    </button>
   </div>
 
 </div>
 
 <div class="bottom">
-  <button>🏠 Home</button>
-  <button>📈 Trade</button>
-  <button>💰 Wallet</button>
-  <button>👤 Profile</button>
+  <button onclick="showPage('home')">🏠 Home</button>
+  <button onclick="showPage('trade')">📈 Trade</button>
+  <button onclick="showPage('wallet')">💰 Wallet</button>
+  <button onclick="showPage('profile')">👤 Profile</button>
 </div>
+
+<script>
+
+let balance = 100;
+let ads = 0;
+let referral = 0;
+
+function buyTrade(){
+
+  let win = Math.random() > 0.5;
+
+  if(win){
+    balance += 10;
+    alert("Trade Win +$10");
+  }else{
+    balance -= 10;
+    alert("Trade Loss -$10");
+  }
+
+  updateBalance();
+}
+
+function sellTrade(){
+
+  let win = Math.random() > 0.5;
+
+  if(win){
+    balance += 10;
+    alert("Trade Win +$10");
+  }else{
+    balance -= 10;
+    alert("Trade Loss -$10");
+  }
+
+  updateBalance();
+}
+
+function updateBalance(){
+  document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+}
+
+function copyAddress(){
+
+  navigator.clipboard.writeText(
+    "TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
+  );
+
+  alert("TRX Address Copied");
+}
+
+function withdrawMoney(){
+  alert("Withdrawal Request Submitted");
+}
+
+function inviteFriend(){
+
+  referral += 0.10;
+
+  document.getElementById("refBonus").innerText =
+    "$" + referral.toFixed(2);
+
+  alert("Referral Bonus Added");
+}
+
+function watchAds(){
+
+  ads++;
+
+  document.getElementById("adsCounter").innerText =
+    ads + " / 100 Completed";
+
+  balance += 1;
+
+  updateBalance();
+}
+
+function showPage(page){
+
+  alert(page + " Page Opened");
+
+}
+
+</script>
 
 </body>
 </html>
