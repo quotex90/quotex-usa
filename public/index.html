@@ -1,298 +1,456 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Quotex USA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     body{
-      margin:0;
+      background:#020617;
+      color:white;
       font-family:Arial;
-      background:#07111f;
-      color:white;
     }
 
-    .container{
-      max-width:420px;
-      margin:auto;
-      padding:15px;
-      padding-bottom:100px;
-    }
-
-    .card{
-      background:#111827;
-      border-radius:20px;
-      padding:20px;
-      margin-bottom:15px;
-    }
-
-    .title{
-      color:#22c55e;
-      font-size:32px;
-      font-weight:bold;
-    }
-
-    .balance{
-      font-size:32px;
-      color:#22c55e;
-      font-weight:bold;
-    }
-
-    .btn{
-      width:100%;
-      padding:15px;
-      border:none;
-      border-radius:15px;
-      color:white;
-      font-size:18px;
-      font-weight:bold;
-      margin-top:10px;
-      cursor:pointer;
-    }
-
-    .green{
-      background:#22c55e;
-    }
-
-    .red{
-      background:#ef4444;
-    }
-
-    .blue{
-      background:#3b82f6;
-    }
-
-    .yellow{
-      background:#f59e0b;
-    }
-
-    .market{
-      background:#07111f;
-      padding:15px;
-      border-radius:15px;
-      margin-top:15px;
-    }
-
-    .chart{
-      display:flex;
-      align-items:flex-end;
-      gap:6px;
-      height:180px;
-      margin-top:20px;
-    }
-
-    .bar{
-      width:18px;
-      border-radius:10px;
-    }
-
-    .greenbar{
-      background:#22c55e;
-    }
-
-    .redbar{
-      background:#ef4444;
-    }
-
-    .asset{
-      background:#07111f;
-      padding:15px;
-      border-radius:15px;
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-    }
-
-    .qr{
-      width:180px;
-      border-radius:20px;
-      margin-top:15px;
-    }
-
-    .bottom{
-      position:fixed;
-      bottom:0;
-      left:0;
-      right:0;
-      background:#111827;
-      display:flex;
-      justify-content:space-around;
-      padding:12px;
-      border-top:1px solid #333;
-    }
-
-    .bottom button{
-      background:none;
-      border:none;
-      color:white;
-      font-size:14px;
-      cursor:pointer;
-    }
-
-    .hidden{
+    .page{
       display:none;
     }
 
-    input{
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      border:none;
-      margin-top:10px;
-      background:#07111f;
-      color:white;
+    .active{
+      display:block;
     }
 
+    .card{
+      background:#0f172a;
+      border-radius:30px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .navbtn{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      color:#9ca3af;
+      font-size:13px;
+    }
+
+    .activebtn{
+      color:#22c55e;
+    }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="max-w-md mx-auto min-h-screen pb-28">
 
-  <div class="card">
-    <div class="title">Quotex USA</div>
-    <p>Professional Trading Dashboard</p>
+  <!-- HOME -->
+  <div id="home" class="page active p-4">
 
-    <p>UID: QTX928173</p>
+    <div class="card">
 
-    <p>Live Balance</p>
-    <div class="balance" id="balance">$100.00</div>
-  </div>
+      <div class="flex justify-between items-center">
 
-  <div class="card">
-    <h2>Trading Market</h2>
+        <div>
+          <h1 class="text-4xl font-bold text-green-400">
+            Quotex USA
+          </h1>
 
-    <div class="market">
+          <p class="text-gray-400 mt-2">
+            Professional Trading Dashboard
+          </p>
+        </div>
 
-      <h2>BTC/USD</h2>
-      <p>$68,420.50</p>
+        <div class="bg-[#020617] p-3 rounded-2xl">
+          <p class="text-xs text-gray-400">
+            UID
+          </p>
 
-      <div class="chart">
-        <div class="bar greenbar" style="height:40%"></div>
-        <div class="bar redbar" style="height:70%"></div>
-        <div class="bar greenbar" style="height:50%"></div>
-        <div class="bar redbar" style="height:90%"></div>
-        <div class="bar greenbar" style="height:60%"></div>
-        <div class="bar redbar" style="height:100%"></div>
-        <div class="bar greenbar" style="height:70%"></div>
+          <p class="font-bold">
+            QTX928173
+          </p>
+        </div>
+
       </div>
 
-      <button class="btn green" onclick="buyTrade()">BUY / UP</button>
+      <div class="grid grid-cols-2 gap-4 mt-6">
 
-      <button class="btn red" onclick="sellTrade()">SELL / DOWN</button>
+        <div class="bg-[#020617] rounded-2xl p-4">
+          <p class="text-gray-400">
+            Main Balance
+          </p>
+
+          <h2 id="mainBalance" class="text-3xl font-bold text-green-400 mt-2">
+            $90.00
+          </h2>
+        </div>
+
+        <div class="bg-[#020617] rounded-2xl p-4">
+          <p class="text-gray-400">
+            Ads Balance
+          </p>
+
+          <h2 id="adsBalance" class="text-3xl font-bold text-yellow-400 mt-2">
+            $0.00
+          </h2>
+        </div>
+
+      </div>
 
     </div>
-  </div>
 
-  <div class="card">
-    <h2>Market Assets</h2>
+    <div class="card">
 
-    <div class="asset">
-      <div>BTC/USD</div>
-      <div style="color:#22c55e">+2.14%</div>
+      <h2 class="text-2xl font-bold mb-5">
+        Market Assets
+      </h2>
+
+      <div class="space-y-3">
+
+        <div class="bg-[#020617] p-4 rounded-2xl flex justify-between">
+          <span>BTC/USD</span>
+          <span class="text-green-400">+2.14%</span>
+        </div>
+
+        <div class="bg-[#020617] p-4 rounded-2xl flex justify-between">
+          <span>ETH/USD</span>
+          <span class="text-green-400">+1.82%</span>
+        </div>
+
+        <div class="bg-[#020617] p-4 rounded-2xl flex justify-between">
+          <span>EUR/USD</span>
+          <span class="text-red-400">-0.34%</span>
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="asset">
-      <div>ETH/USD</div>
-      <div style="color:#22c55e">+1.82%</div>
+  </div>
+
+  <!-- TRADE -->
+  <div id="trade" class="page p-4">
+
+    <div class="card">
+
+      <h2 class="text-3xl font-bold mb-6">
+        Trading Market
+      </h2>
+
+      <div class="bg-[#020617] rounded-3xl p-5">
+
+        <div class="flex justify-between items-center">
+
+          <div>
+            <h2 class="text-4xl font-bold">
+              BTC/USD
+            </h2>
+
+            <p class="text-2xl mt-3">
+              $68,420.50
+            </p>
+          </div>
+
+          <div>
+            <p class="text-gray-400">
+              Profit
+            </p>
+
+            <h2 class="text-green-400 text-2xl font-bold">
+              +92%
+            </h2>
+          </div>
+
+        </div>
+
+        <div class="h-72 flex items-end justify-center gap-3 mt-10">
+
+          <div class="bg-green-500 w-8 h-28 rounded-full"></div>
+          <div class="bg-red-500 w-8 h-44 rounded-full"></div>
+          <div class="bg-green-500 w-8 h-32 rounded-full"></div>
+          <div class="bg-red-500 w-8 h-56 rounded-full"></div>
+          <div class="bg-green-500 w-8 h-40 rounded-full"></div>
+          <div class="bg-red-500 w-8 h-64 rounded-full"></div>
+          <div class="bg-green-500 w-8 h-48 rounded-full"></div>
+
+        </div>
+
+        <button
+          onclick="buyTrade()"
+          class="w-full bg-green-500 py-5 rounded-3xl text-2xl font-bold mt-8"
+        >
+          BUY / UP
+        </button>
+
+        <button
+          onclick="sellTrade()"
+          class="w-full bg-red-500 py-5 rounded-3xl text-2xl font-bold mt-5"
+        >
+          SELL / DOWN
+        </button>
+
+      </div>
+
     </div>
 
-    <div class="asset">
-      <div>EUR/USD</div>
-      <div style="color:red">-0.34%</div>
+  </div>
+
+  <!-- WALLET -->
+  <div id="wallet" class="page p-4">
+
+    <div class="card">
+
+      <h2 class="text-3xl font-bold mb-6">
+        Deposit
+      </h2>
+
+      <div class="bg-[#020617] rounded-3xl p-5">
+
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
+          class="rounded-2xl mx-auto"
+        >
+
+        <p class="text-center mt-5 text-gray-400">
+          USDT TRC20 Wallet Address
+        </p>
+
+        <div class="bg-[#0f172a] p-4 rounded-2xl mt-4 break-all text-center">
+          TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
+        </div>
+
+        <button
+          onclick="copyWallet()"
+          class="w-full bg-green-500 py-4 rounded-2xl mt-5 text-xl font-bold"
+        >
+          Copy Wallet Address
+        </button>
+
+      </div>
+
+      <div class="bg-[#020617] rounded-3xl p-5 mt-6">
+
+        <p class="text-xl mb-3">
+          Deposit Screenshot
+        </p>
+
+        <input
+          type="file"
+          class="w-full bg-[#0f172a] p-3 rounded-2xl"
+        >
+
+        <button
+          onclick="depositConfirm()"
+          class="w-full bg-blue-500 py-4 rounded-2xl mt-5 text-xl font-bold"
+        >
+          Confirm Deposit
+        </button>
+
+      </div>
+
+      <div class="bg-[#020617] rounded-3xl p-5 mt-6">
+
+        <h2 class="text-2xl font-bold mb-5">
+          Withdraw
+        </h2>
+
+        <input
+          id="withdrawAddress"
+          type="text"
+          placeholder="Enter USDT Address"
+          class="w-full bg-[#0f172a] p-4 rounded-2xl mb-4 outline-none"
+        >
+
+        <input
+          id="withdrawAmount"
+          type="number"
+          placeholder="Minimum $20"
+          class="w-full bg-[#0f172a] p-4 rounded-2xl outline-none"
+        >
+
+        <button
+          onclick="withdrawRequest()"
+          class="w-full bg-red-500 py-4 rounded-2xl mt-5 text-xl font-bold"
+        >
+          Withdraw Request
+        </button>
+
+      </div>
+
     </div>
+
   </div>
 
-  <div class="card">
-    <h2>USDT TRX Deposit</h2>
+  <!-- REWARD -->
+  <div id="reward" class="page p-4">
 
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy" class="qr">
+    <div class="card">
 
-    <p>
-      TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
-    </p>
+      <h2 class="text-3xl font-bold mb-5">
+        Free USD Earn
+      </h2>
 
-    <button class="btn blue" onclick="copyAddress()">
-      Copy Address
-    </button>
+      <div class="bg-[#020617] rounded-3xl p-5">
+
+        <p class="text-gray-400">
+          Daily Ads Progress
+        </p>
+
+        <h2 id="adsCount" class="text-5xl font-bold text-green-400 mt-3">
+          0 / 100
+        </h2>
+
+        <p class="text-gray-400 mt-5">
+          1 Ads = $0.02
+        </p>
+
+        <a
+          href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0"
+          target="_blank"
+        >
+          <button
+            onclick="watchAds()"
+            class="w-full bg-green-500 py-5 rounded-3xl text-2xl font-bold mt-6"
+          >
+            Watch Ads & Earn
+          </button>
+        </a>
+
+      </div>
+
+      <div class="bg-[#020617] rounded-3xl p-5 mt-6">
+
+        <h2 class="text-2xl font-bold">
+          Referral System
+        </h2>
+
+        <p class="text-gray-400 mt-3">
+          1 Invite = $0.10
+        </p>
+
+        <div class="bg-[#0f172a] p-4 rounded-2xl mt-4 break-all">
+          https://quotex-usa.onrender.com/?ref=QTX928173
+        </div>
+
+        <button
+          onclick="copyReferral()"
+          class="w-full bg-yellow-500 py-4 rounded-2xl mt-5 text-xl font-bold"
+        >
+          Copy Referral Link
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="card">
-    <h2>Withdraw</h2>
+  <!-- PROFILE -->
+  <div id="profile" class="page p-4">
 
-    <input type="text" placeholder="Enter USDT Address">
+    <div class="card">
 
-    <input type="number" placeholder="Enter Amount">
+      <h2 class="text-3xl font-bold mb-6">
+        Customer Support
+      </h2>
 
-    <button class="btn yellow" onclick="withdrawMoney()">
-      Withdraw Now
-    </button>
-  </div>
+      <a
+        href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a"
+        target="_blank"
+      >
+        <button
+          class="w-full bg-green-500 py-5 rounded-3xl text-2xl font-bold"
+        >
+          WhatsApp Support
+        </button>
+      </a>
 
-  <div class="card">
-    <h2>Referral System</h2>
+      <div class="bg-[#020617] rounded-3xl p-5 mt-6">
 
-    <p>Your Referral Bonus:</p>
+        <p class="text-gray-400">
+          Invite Bonus
+        </p>
 
-    <h1 id="refBonus">$0.00</h1>
+        <h2 class="text-5xl font-bold text-yellow-400 mt-3">
+          $0.10
+        </h2>
 
-    <button class="btn green" onclick="inviteFriend()">
-      Invite & Earn
-    </button>
-  </div>
+      </div>
 
-  <div class="card">
-    <h2>Ads Reward System</h2>
+    </div>
 
-    <a href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0" target="_blank">
-      <button class="btn green" onclick="watchAds()">
-        Watch Ads & Earn
-      </button>
-    </a>
-
-    <p id="adsCounter">0 / 100 Completed</p>
-  </div>
-
-  <div class="card">
-    <h2>Customer Support</h2>
-
-    <a href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a" target="_blank">
-      <button class="btn green">
-        WhatsApp Support
-      </button>
-    </a>
-
-    <button class="btn blue">
-      Telegram Support
-    </button>
   </div>
 
 </div>
 
-<div class="bottom">
-  <button onclick="showPage('home')">🏠 Home</button>
-  <button onclick="showPage('trade')">📈 Trade</button>
-  <button onclick="showPage('wallet')">💰 Wallet</button>
-  <button onclick="showPage('profile')">👤 Profile</button>
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-[#0f172a] border-t border-gray-800">
+
+  <div class="max-w-md mx-auto flex justify-around p-4">
+
+    <button onclick="showPage('home')" class="navbtn activebtn">
+      🏠
+      <span>Home</span>
+    </button>
+
+    <button onclick="showPage('trade')" class="navbtn">
+      📈
+      <span>Trade</span>
+    </button>
+
+    <button onclick="showPage('wallet')" class="navbtn">
+      💰
+      <span>Wallet</span>
+    </button>
+
+    <button onclick="showPage('reward')" class="navbtn">
+      🎁
+      <span>Reward</span>
+    </button>
+
+    <button onclick="showPage('profile')" class="navbtn">
+      👤
+      <span>Profile</span>
+    </button>
+
+  </div>
+
 </div>
 
 <script>
 
-let balance = 100;
 let ads = 0;
-let referral = 0;
+let adsBalance = 0;
+let mainBalance = 90;
+
+function showPage(id){
+
+  document.querySelectorAll('.page').forEach(page=>{
+    page.classList.remove('active');
+  });
+
+  document.getElementById(id).classList.add('active');
+}
 
 function buyTrade(){
+
+  if(mainBalance < 10){
+    alert("Minimum $10 required");
+    return;
+  }
 
   let win = Math.random() > 0.5;
 
   if(win){
-    balance += 10;
-    alert("Trade Win +$10");
+    mainBalance += 5;
+    alert("Trade Win +$5");
   }else{
-    balance -= 10;
-    alert("Trade Loss -$10");
+    mainBalance -= 5;
+    alert("Trade Loss -$5");
   }
 
   updateBalance();
@@ -300,62 +458,83 @@ function buyTrade(){
 
 function sellTrade(){
 
+  if(mainBalance < 10){
+    alert("Minimum $10 required");
+    return;
+  }
+
   let win = Math.random() > 0.5;
 
   if(win){
-    balance += 10;
-    alert("Trade Win +$10");
+    mainBalance += 5;
+    alert("Trade Win +$5");
   }else{
-    balance -= 10;
-    alert("Trade Loss -$10");
+    mainBalance -= 5;
+    alert("Trade Loss -$5");
   }
 
   updateBalance();
 }
 
 function updateBalance(){
-  document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+
+  document.getElementById("mainBalance").innerText =
+    "$" + mainBalance.toFixed(2);
+
+  document.getElementById("adsBalance").innerText =
+    "$" + adsBalance.toFixed(2);
 }
 
-function copyAddress(){
+function copyWallet(){
 
   navigator.clipboard.writeText(
     "TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
   );
 
-  alert("TRX Address Copied");
+  alert("Wallet Address Copied");
 }
 
-function withdrawMoney(){
-  alert("Withdrawal Request Submitted");
+function depositConfirm(){
+  alert("Deposit Request Submitted");
 }
 
-function inviteFriend(){
+function withdrawRequest(){
 
-  referral += 0.10;
+  let amount =
+    document.getElementById("withdrawAmount").value;
 
-  document.getElementById("refBonus").innerText =
-    "$" + referral.toFixed(2);
+  if(amount < 20){
+    alert("Minimum withdrawal is $20");
+    return;
+  }
 
-  alert("Referral Bonus Added");
+  alert("Withdrawal Request Sent");
 }
 
 function watchAds(){
 
+  if(ads >= 100){
+    alert("Daily Limit Reached");
+    return;
+  }
+
   ads++;
 
-  document.getElementById("adsCounter").innerText =
-    ads + " / 100 Completed";
+  adsBalance += 0.02;
 
-  balance += 1;
+  document.getElementById("adsCount").innerText =
+    ads + " / 100";
 
   updateBalance();
 }
 
-function showPage(page){
+function copyReferral(){
 
-  alert(page + " Page Opened");
+  navigator.clipboard.writeText(
+    "https://quotex-usa.onrender.com/?ref=QTX928173"
+  );
 
+  alert("Referral Link Copied");
 }
 
 </script>
