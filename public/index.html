@@ -10,7 +10,7 @@
 <style>
 
 body{
-background:#0b1220;
+background:#0B1220;
 color:white;
 font-family:Arial;
 overflow-x:hidden;
@@ -25,12 +25,21 @@ display:block;
 }
 
 .chart-bar{
-width:14px;
+width:12px;
 border-radius:20px;
+transition:0.5s;
 }
 
 .bottom-nav{
-backdrop-filter:blur(10px);
+backdrop-filter:blur(15px);
+}
+
+.glow{
+box-shadow:0 0 20px rgba(34,197,94,0.4);
+}
+
+input{
+outline:none;
 }
 
 </style>
@@ -48,6 +57,7 @@ backdrop-filter:blur(10px);
 <div class="flex justify-between items-center">
 
 <div>
+
 <h1 class="text-3xl font-bold text-green-400">
 Quotex USA
 </h1>
@@ -55,9 +65,11 @@ Quotex USA
 <p class="text-gray-400 mt-1">
 Professional Trading Platform
 </p>
+
 </div>
 
 <div class="bg-[#0B1220] px-4 py-2 rounded-2xl">
+
 <p class="text-xs text-gray-400">
 UID
 </p>
@@ -65,6 +77,7 @@ UID
 <p id="uid" class="font-bold">
 QTX0000
 </p>
+
 </div>
 
 </div>
@@ -99,36 +112,54 @@ $0.00
 
 </div>
 
-<div class="bg-[#111827] rounded-3xl p-5 mb-5">
+<div class="bg-[#111827] rounded-3xl p-5">
 
-<h2 class="text-2xl font-bold mb-4">
-Market Assets
+<h2 class="text-2xl font-bold mb-5">
+Live Market Assets
 </h2>
 
 <div class="space-y-3">
 
 <div class="bg-[#0B1220] rounded-2xl p-4 flex justify-between">
+
 <div>
 <p class="font-bold">BTC/USD</p>
 <p class="text-gray-400 text-sm">Crypto</p>
 </div>
 
 <div class="text-right">
-<p class="font-bold">$68,420</p>
-<p class="text-green-400">+2.14%</p>
+
+<p id="btcPrice" class="font-bold">
+$68420
+</p>
+
+<p id="btcChange" class="text-green-400">
++2.14%
+</p>
+
 </div>
+
 </div>
 
 <div class="bg-[#0B1220] rounded-2xl p-4 flex justify-between">
+
 <div>
 <p class="font-bold">ETH/USD</p>
 <p class="text-gray-400 text-sm">Crypto</p>
 </div>
 
 <div class="text-right">
-<p class="font-bold">$3,520</p>
-<p class="text-green-400">+1.82%</p>
+
+<p id="ethPrice" class="font-bold">
+$3520
+</p>
+
+<p id="ethChange" class="text-green-400">
++1.82%
+</p>
+
 </div>
+
 </div>
 
 </div>
@@ -145,16 +176,19 @@ Market Assets
 <div class="flex justify-between items-center mb-5">
 
 <div>
+
 <h2 class="text-3xl font-bold">
 BTC/USD
 </h2>
 
-<p class="text-green-400 text-xl mt-1">
-$68,420.50
+<p id="livePrice" class="text-green-400 text-2xl mt-1">
+$68420.50
 </p>
+
 </div>
 
 <div class="text-right">
+
 <p class="text-gray-400 text-sm">
 Profit
 </p>
@@ -162,20 +196,20 @@ Profit
 <p class="text-green-400 text-2xl font-bold">
 +92%
 </p>
-</div>
 
 </div>
 
-<div class="bg-[#0B1220] rounded-3xl h-64 flex items-end justify-center gap-2 p-5">
+</div>
 
-<div class="chart-bar bg-green-500 h-24"></div>
-<div class="chart-bar bg-red-500 h-40"></div>
-<div class="chart-bar bg-green-500 h-32"></div>
-<div class="chart-bar bg-red-500 h-52"></div>
-<div class="chart-bar bg-green-500 h-36"></div>
-<div class="chart-bar bg-red-500 h-60"></div>
-<div class="chart-bar bg-green-500 h-40"></div>
-<div class="chart-bar bg-red-500 h-48"></div>
+<p id="marketStatus" class="text-green-400 font-bold mb-4">
+Market Up ▲
+</p>
+
+<!-- LIVE CHART -->
+<div
+id="chart"
+class="bg-[#0B1220] rounded-3xl h-72 flex items-end justify-center gap-2 p-5 overflow-hidden"
+>
 
 </div>
 
@@ -183,7 +217,7 @@ Profit
 
 <button
 onclick="buyTrade()"
-class="bg-green-500 py-5 rounded-3xl text-xl font-bold"
+class="bg-green-500 glow py-5 rounded-3xl text-xl font-bold"
 >
 BUY / UP
 </button>
@@ -209,6 +243,10 @@ SELL / DOWN
 <h2 class="text-3xl font-bold mb-5">
 USDT Deposit
 </h2>
+
+<p class="text-gray-400 mb-3">
+Minimum Deposit: $10
+</p>
 
 <img
 src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
@@ -258,17 +296,21 @@ Confirm Deposit
 Withdraw
 </h2>
 
+<p class="text-gray-400 mb-3">
+Minimum Withdrawal: $20
+</p>
+
 <input
 id="withdrawAddress"
 placeholder="Enter USDT Address"
-class="w-full bg-[#0B1220] p-4 rounded-2xl outline-none mb-4"
+class="w-full bg-[#0B1220] p-4 rounded-2xl mb-4"
 />
 
 <input
 id="withdrawAmount"
 type="number"
-placeholder="Minimum $20"
-class="w-full bg-[#0B1220] p-4 rounded-2xl outline-none"
+placeholder="Amount USD"
+class="w-full bg-[#0B1220] p-4 rounded-2xl"
 />
 
 <button
@@ -412,6 +454,8 @@ let mainBalance = 10;
 let adsBalance = 0;
 let ads = 0;
 
+let livePrice = 68420.50;
+
 const uid =
 "QTX" + Math.floor(Math.random()*99999999);
 
@@ -439,6 +483,80 @@ document.getElementById("adsBalance").innerText =
 "$" + adsBalance.toFixed(2);
 
 }
+
+function generateChart(){
+
+const chart =
+document.getElementById("chart");
+
+chart.innerHTML = "";
+
+for(let i=0;i<18;i++){
+
+let height =
+Math.floor(Math.random()*180)+40;
+
+let color =
+Math.random() > 0.5
+? "bg-green-500"
+: "bg-red-500";
+
+chart.innerHTML += `
+<div
+class="chart-bar ${color}"
+style="height:${height}px"
+></div>
+`;
+
+}
+
+}
+
+function updateMarket(){
+
+let change =
+(Math.random()*200)-100;
+
+livePrice += change;
+
+if(livePrice < 1000){
+livePrice = 68420;
+}
+
+document.getElementById("livePrice").innerText =
+"$" + livePrice.toFixed(2);
+
+document.getElementById("btcPrice").innerText =
+"$" + livePrice.toFixed(2);
+
+document.getElementById("ethPrice").innerText =
+"$" + (livePrice/20).toFixed(2);
+
+if(change > 0){
+
+document.getElementById("marketStatus").innerText =
+"Market Up ▲";
+
+document.getElementById("marketStatus").style.color =
+"#22c55e";
+
+}else{
+
+document.getElementById("marketStatus").innerText =
+"Market Down ▼";
+
+document.getElementById("marketStatus").style.color =
+"#ef4444";
+
+}
+
+generateChart();
+
+}
+
+setInterval(updateMarket,2000);
+
+generateChart();
 
 function buyTrade(){
 
