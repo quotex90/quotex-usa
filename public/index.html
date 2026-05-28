@@ -1,602 +1,394 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- TIME SELECT -->
+<div class="time-box">
 
-<title>Quotex USA</title>
-
-<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
-body{
-background:#0f172a;
-color:white;
-overflow-x:hidden;
-}
-
-.topbar{
-height:70px;
-background:#111827;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 15px;
-border-bottom:1px solid #1f2937;
-position:fixed;
-top:0;
-left:0;
-right:0;
-z-index:999;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#22c55e;
-}
-
-.balance{
-background:#1e293b;
-padding:10px 15px;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-}
-
-.deposit-btn{
-background:#22c55e;
-border:none;
-padding:10px 18px;
-border-radius:10px;
-color:white;
-font-weight:bold;
-font-size:16px;
-}
-
-.chart-area{
-margin-top:70px;
-height:55vh;
-position:relative;
-}
-
-#chart{
-height:100%;
-width:100%;
-}
-
-.market-select{
-position:absolute;
-bottom:15px;
-left:15px;
-background:#111827;
-padding:12px;
-border-radius:12px;
-font-size:18px;
-font-weight:bold;
-}
-
-.trade-box{
-background:#111827;
-padding:15px;
-border-top-left-radius:25px;
-border-top-right-radius:25px;
-margin-top:-10px;
-}
-
-.trade-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:15px;
-}
-
-.input-box{
-background:#1e293b;
-padding:15px;
-border-radius:14px;
-}
-
-.input-box p{
-color:#94a3b8;
-font-size:14px;
-margin-bottom:10px;
-}
-
-.input-box input{
-width:100%;
-background:none;
-border:none;
-color:white;
-font-size:22px;
-outline:none;
-}
-
-.trade-buttons{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:20px;
-}
-
-.buy-btn{
-background:#22c55e;
-border:none;
-height:65px;
-border-radius:15px;
-font-size:28px;
-font-weight:bold;
-color:white;
-}
-
-.sell-btn{
-background:#ef4444;
-border:none;
-height:65px;
-border-radius:15px;
-font-size:28px;
-font-weight:bold;
-color:white;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-height:70px;
-background:#111827;
-border-top:1px solid #1f2937;
-display:flex;
-justify-content:space-around;
-align-items:center;
-z-index:999;
-}
-
-.nav-btn{
-display:flex;
-flex-direction:column;
-align-items:center;
-font-size:14px;
-color:#cbd5e1;
-background:none;
-border:none;
-}
-
-.page{
-display:none;
-padding:90px 15px 90px;
-}
-
-.active-page{
-display:block;
-}
-
-.card{
-background:#111827;
-padding:18px;
-border-radius:20px;
-margin-bottom:15px;
-}
-
-.card h2{
-margin-bottom:15px;
-}
-
-.wallet{
-word-break:break-all;
-background:#1e293b;
-padding:12px;
-border-radius:12px;
-margin-top:10px;
-}
-
-.qr{
-width:180px;
-height:180px;
-margin:auto;
-display:block;
-margin-top:15px;
-border-radius:15px;
-}
-
-.ads-btn{
-width:100%;
-height:60px;
-border:none;
-border-radius:15px;
-background:#2563eb;
-color:white;
-font-size:20px;
-font-weight:bold;
-margin-top:15px;
-}
-
-.ref-box{
-background:#1e293b;
-padding:15px;
-border-radius:15px;
-margin-top:15px;
-}
-
-.support-btn{
-display:block;
-text-decoration:none;
-background:#22c55e;
-padding:15px;
-border-radius:15px;
-text-align:center;
-color:white;
-font-size:20px;
-font-weight:bold;
-margin-top:15px;
-}
-
-.asset{
-display:flex;
-justify-content:space-between;
-padding:15px;
-background:#1e293b;
-border-radius:14px;
-margin-top:10px;
-}
-
-.green{
-color:#22c55e;
-}
-
-.red{
-color:#ef4444;
-}
-</style>
-</head>
-
-<body>
-
-<div class="topbar">
-
-<div class="logo">Quotex USA</div>
-
-<div class="balance">
-$ <span id="balance">90.00</span>
-</div>
-
-<button class="deposit-btn" onclick="showPage('depositPage')">
-Deposit
-</button>
+<select id="timeSelect">
+<option value="5">5s</option>
+<option value="10">10s</option>
+<option value="15">15s</option>
+<option value="30">30s</option>
+<option value="60" selected>1m</option>
+<option value="120">2m</option>
+<option value="300">5m</option>
+<option value="600">10m</option>
+<option value="1800">30m</option>
+<option value="3600">1h</option>
+</select>
 
 </div>
 
-<!-- HOME -->
-<div id="homePage" class="active-page">
+<!-- MARKET SELECT -->
+<div class="market-top">
 
-<div class="chart-area">
-<div id="chart"></div>
+<select id="marketSelect">
 
-<div class="market-select">
-BTC/USD OTC 92%
+<option>BTC/USD OTC</option>
+<option>ETH/USD OTC</option>
+<option>TON/USD OTC</option>
+<option>SOL/USD OTC</option>
+<option>XRP/USD OTC</option>
+<option>BNB/USD OTC</option>
+
+</select>
+
+<select id="accountType">
+
+<option value="demo">
+DEMO $10,000
+</option>
+
+<option value="live">
+LIVE ACCOUNT
+</option>
+
+</select>
+
 </div>
+
+<!-- LIVE / DEMO BALANCE -->
+<div class="balances">
+
+<div class="balance-card">
+<p>Live Balance</p>
+<h2 id="liveBalance">0.00$</h2>
 </div>
 
-<div class="trade-box">
-
-<div class="trade-grid">
-
-<div class="input-box">
-<p>Timer</p>
-<input value="00:01:00">
-</div>
-
-<div class="input-box">
-<p>Investment</p>
-<input value="100$">
+<div class="balance-card">
+<p>Demo Balance</p>
+<h2 id="demoBalance">10000$</h2>
 </div>
 
 </div>
 
-<div class="trade-buttons">
-
-<button class="buy-btn" onclick="buyTrade()">
-UP
-</button>
-
-<button class="sell-btn" onclick="sellTrade()">
-DOWN
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- MARKET -->
-<div id="marketPage" class="page">
-
-<div class="card">
-<h2>Trading Markets</h2>
-
-<div class="asset">
-<div>BTC/USD</div>
-<div class="green">+2.10%</div>
-</div>
-
-<div class="asset">
-<div>ETH/USD</div>
-<div class="green">+1.84%</div>
-</div>
-
-<div class="asset">
-<div>TON/USD</div>
-<div class="green">+4.12%</div>
-</div>
-
-<div class="asset">
-<div>SOL/USD</div>
-<div class="red">-1.45%</div>
-</div>
-
-<div class="asset">
-<div>XRP/USD</div>
-<div class="green">+6.50%</div>
-</div>
-
-</div>
-
-</div>
-
-<!-- DEPOSIT -->
-<div id="depositPage" class="page">
-
-<div class="card">
-
-<h2>USDT TRC20 Deposit</h2>
-
-<img class="qr"
-src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy">
-
-<div class="wallet">
-TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
-</div>
-
-<p style="margin-top:15px;color:#94a3b8;">
-Minimum Deposit: 10$
-</p>
-
-</div>
-
-</div>
-
-<!-- ADS -->
-<div id="adsPage" class="page">
-
+<!-- ADS SYSTEM -->
 <div class="card">
 
 <h2>Watch Ads & Earn</h2>
 
-<p>
-Complete ads and earn USD balance.
-</p>
-
-<h1 style="margin-top:20px;">
-<span id="adsCount">0</span>/100
+<h1 id="adsProgress">
+0/100
 </h1>
 
-<button class="ads-btn" onclick="watchAds()">
+<p>
+1 successful ad = 0.02$
+</p>
+
+<button class="ads-btn"
+onclick="openAd()">
 Watch Ads
 </button>
 
 </div>
 
-</div>
-
 <!-- REFERRAL -->
-<div id="refPage" class="page">
-
 <div class="card">
 
-<h2>Referral System</h2>
-
-<p>Invite friends and earn 0.10$</p>
+<h2>Referral</h2>
 
 <div class="ref-box">
-https://quotexusa.com/ref/QTX928173
+https://quotex-usa.onrender.com/ref/QTX928173
 </div>
 
-</div>
+<p style="margin-top:15px;">
+Referral Reward: 0.10$
+</p>
 
 </div>
 
-<!-- SUPPORT -->
-<div id="supportPage" class="page">
-
+<!-- DEPOSIT -->
 <div class="card">
 
-<h2>Customer Support</h2>
+<h2>USDT TRC20 Deposit</h2>
 
-<a class="support-btn"
-href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a">
-WhatsApp Support
-</a>
+<img
+class="qr"
+src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
+/>
+
+<div class="wallet">
+TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
+</div>
+
+<p style="margin-top:10px;">
+Minimum Deposit: 10$
+</p>
+
+<input
+id="depositAmount"
+placeholder="Enter Deposit Amount"
+style="
+width:100%;
+height:55px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+padding:15px;
+font-size:18px;
+background:#1e293b;
+color:white;
+"
+/>
+
+<input
+type="file"
+style="
+margin-top:15px;
+color:white;
+"
+/>
+
+<button class="deposit-btn"
+style="
+margin-top:15px;
+width:100%;
+height:55px;
+"
+onclick="confirmDeposit()">
+
+Confirm Deposit
+
+</button>
 
 </div>
 
-</div>
+<!-- WITHDRAW -->
+<div class="card">
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
+<h2>Withdraw USDT</h2>
 
-<button class="nav-btn" onclick="showPage('homePage')">
-🏠
-Home
-</button>
+<p>
+Minimum Withdrawal: 20$
+</p>
 
-<button class="nav-btn" onclick="showPage('marketPage')">
-📈
-Market
-</button>
+<input
+id="withdrawAddress"
+placeholder="Enter USDT Address"
+style="
+width:100%;
+height:55px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+padding:15px;
+font-size:18px;
+background:#1e293b;
+color:white;
+"
+/>
 
-<button class="nav-btn" onclick="showPage('depositPage')">
-💰
-Deposit
-</button>
+<input
+id="withdrawAmount"
+placeholder="Withdrawal Amount"
+style="
+width:100%;
+height:55px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+padding:15px;
+font-size:18px;
+background:#1e293b;
+color:white;
+"
+/>
 
-<button class="nav-btn" onclick="showPage('adsPage')">
-🎁
-Ads
-</button>
+<button class="sell-btn"
+style="
+margin-top:15px;
+width:100%;
+height:55px;
+"
+onclick="withdrawNow()">
 
-<button class="nav-btn" onclick="showPage('refPage')">
-👥
-Referral
-</button>
+Withdraw
 
-<button class="nav-btn" onclick="showPage('supportPage')">
-💬
-Support
 </button>
 
 </div>
 
 <script>
 
-function showPage(id){
+let demoBalance = 10000;
+let liveBalance = 0;
+let adsCount = 0;
 
-document.getElementById('homePage').classList.remove('active-page');
-document.getElementById('marketPage').classList.remove('active-page');
-document.getElementById('depositPage').classList.remove('active-page');
-document.getElementById('adsPage').classList.remove('active-page');
-document.getElementById('refPage').classList.remove('active-page');
-document.getElementById('supportPage').classList.remove('active-page');
+let adOpened = false;
+let adReward = 0.02;
 
-document.getElementById(id).classList.add('active-page');
+function openAd(){
 
-}
-
-let ads = 0;
-let balance = 90;
-
-function watchAds(){
+adOpened = true;
 
 window.open(
 "https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0",
 "_blank"
 );
 
-ads++;
+setTimeout(()=>{
 
-balance += 0.02;
+if(adOpened){
 
-document.getElementById("adsCount").innerHTML = ads;
-document.getElementById("balance").innerHTML = balance.toFixed(2);
+adsCount++;
+
+liveBalance += adReward;
+
+document.getElementById("adsProgress")
+.innerHTML = adsCount + "/100";
+
+document.getElementById("liveBalance")
+.innerHTML = liveBalance.toFixed(2) + "$";
+
+alert("Ad Completed +0.02$");
 
 }
 
-function buyTrade(){
-alert("BUY Trade Opened");
+},15000);
+
 }
 
-function sellTrade(){
-alert("SELL Trade Opened");
+window.onfocus = function(){
+
+adOpened = false;
+
 }
 
-const chart = LightweightCharts.createChart(
-document.getElementById('chart'),
-{
-layout:{
-background:{color:'#0f172a'},
-textColor:'#ffffff',
-},
-grid:{
-vertLines:{color:'#1e293b'},
-horzLines:{color:'#1e293b'},
-},
-width:window.innerWidth,
-height:window.innerHeight * 0.55,
-crosshair:{
-mode:0,
-},
-rightPriceScale:{
-borderColor:'#334155',
-},
-timeScale:{
-borderColor:'#334155',
-},
-}
-);
+function confirmDeposit(){
 
-const candleSeries = chart.addCandlestickSeries({
-upColor:'#22c55e',
-downColor:'#ef4444',
-borderVisible:false,
-wickUpColor:'#22c55e',
-wickDownColor:'#ef4444',
+let amount =
+Number(document.getElementById("depositAmount").value);
+
+if(amount < 10){
+
+alert("Minimum Deposit 10$");
+
+return;
+
+}
+
+liveBalance += amount;
+
+document.getElementById("liveBalance")
+.innerHTML = liveBalance.toFixed(2) + "$";
+
+alert("Deposit Request Sent To Admin Panel");
+
+}
+
+function withdrawNow(){
+
+let amount =
+Number(document.getElementById("withdrawAmount").value);
+
+if(amount < 20){
+
+alert("Minimum Withdrawal 20$");
+
+return;
+
+}
+
+if(amount > liveBalance){
+
+alert("Insufficient Balance");
+
+return;
+
+}
+
+liveBalance -= amount;
+
+document.getElementById("liveBalance")
+.innerHTML = liveBalance.toFixed(2) + "$";
+
+alert("Withdrawal Request Sent");
+
+}
+
+document.getElementById("timeSelect")
+.addEventListener("change", function(){
+
+alert("Trade Time: " + this.value + " seconds");
+
 });
 
-const data = [];
+document.getElementById("marketSelect")
+.addEventListener("change", function(){
 
-let time = 1;
-let price = 68500;
+alert("Market Changed To: " + this.value);
 
-for(let i=0;i<80;i++){
-
-let open = price;
-
-let close = open + (Math.random()-0.5)*500;
-
-let high = Math.max(open, close)+Math.random()*200;
-
-let low = Math.min(open, close)-Math.random()*200;
-
-data.push({
-time,
-open,
-high,
-low,
-close
 });
 
-price = close;
-time++;
+document.getElementById("accountType")
+.addEventListener("change", function(){
+
+if(this.value === "demo"){
+
+alert("Demo Account Selected");
+
+}else{
+
+alert("Live Account Selected");
 
 }
 
-candleSeries.setData(data);
-
-setInterval(()=>{
-
-let last = data[data.length-1];
-
-let open = last.close;
-
-let close = open + (Math.random()-0.5)*500;
-
-let high = Math.max(open, close)+Math.random()*200;
-
-let low = Math.min(open, close)-Math.random()*200;
-
-const newCandle = {
-time:last.time + 1,
-open,
-high,
-low,
-close
-};
-
-data.push(newCandle);
-
-candleSeries.update(newCandle);
-
-},2000);
+});
 
 </script>
 
-</body>
-</html>
+<style>
+
+.market-top{
+display:flex;
+gap:10px;
+margin:15px;
+}
+
+.market-top select{
+flex:1;
+height:50px;
+background:#1e293b;
+border:none;
+border-radius:12px;
+color:white;
+padding:10px;
+font-size:16px;
+}
+
+.time-box{
+padding:15px;
+}
+
+.time-box select{
+width:100%;
+height:50px;
+background:#1e293b;
+border:none;
+border-radius:12px;
+padding:10px;
+color:white;
+font-size:18px;
+}
+
+.balances{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:15px;
+}
+
+.balance-card{
+background:#111827;
+padding:20px;
+border-radius:20px;
+}
+
+.balance-card p{
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.balance-card h2{
+font-size:28px;
+color:#22c55e;
+}
+
+</style>
