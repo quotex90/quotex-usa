@@ -1,394 +1,444 @@
-<!-- TIME SELECT -->
-<div class="time-box">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<select id="timeSelect">
-<option value="5">5s</option>
-<option value="10">10s</option>
-<option value="15">15s</option>
-<option value="30">30s</option>
-<option value="60" selected>1m</option>
-<option value="120">2m</option>
-<option value="300">5m</option>
-<option value="600">10m</option>
-<option value="1800">30m</option>
-<option value="3600">1h</option>
-</select>
+<title>Quotex USA</title>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightweight-charts/dist/lightweight-charts.standalone.production.js">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#06142b;
+color:white;
+padding-bottom:90px;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:#0c1b35;
+border-bottom:1px solid #1d2d4d;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+color:#17d65c;
+}
+
+.balance{
+background:#1b2b4a;
+padding:12px 20px;
+border-radius:14px;
+font-size:18px;
+font-weight:bold;
+}
+
+.deposit-btn{
+background:#22d15f;
+padding:12px 20px;
+border:none;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+color:white;
+}
+
+.selects{
+padding:15px;
+display:flex;
+gap:10px;
+}
+
+.selects select{
+flex:1;
+background:#142544;
+color:white;
+border:none;
+padding:15px;
+border-radius:14px;
+font-size:16px;
+}
+
+.chart-box{
+height:420px;
+margin:10px;
+border-radius:16px;
+overflow:hidden;
+background:#08152d;
+}
+
+.trade-box{
+display:flex;
+gap:10px;
+padding:15px;
+}
+
+.trade-card{
+flex:1;
+background:#132340;
+padding:20px;
+border-radius:18px;
+}
+
+.trade-card h3{
+font-size:18px;
+color:#9fb3d9;
+margin-bottom:15px;
+}
+
+.trade-card input{
+width:100%;
+background:transparent;
+border:none;
+font-size:35px;
+color:white;
+outline:none;
+}
+
+.buttons{
+display:flex;
+gap:12px;
+padding:15px;
+}
+
+.up{
+flex:1;
+background:#20d45e;
+padding:22px;
+border:none;
+border-radius:18px;
+font-size:35px;
+font-weight:bold;
+color:white;
+}
+
+.down{
+flex:1;
+background:#f44343;
+padding:22px;
+border:none;
+border-radius:18px;
+font-size:35px;
+font-weight:bold;
+color:white;
+}
+
+.section{
+padding:15px;
+}
+
+.card{
+background:#10203d;
+padding:20px;
+border-radius:18px;
+margin-bottom:15px;
+}
+
+.card input{
+width:100%;
+padding:18px;
+border:none;
+border-radius:12px;
+margin-top:10px;
+background:#192b4d;
+color:white;
+font-size:18px;
+}
+
+.card button{
+width:100%;
+padding:18px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+background:#22d15f;
+color:white;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#0c1b35;
+display:flex;
+justify-content:space-around;
+padding:14px 0;
+border-top:1px solid #1e3157;
+}
+
+.bottom-nav button{
+background:none;
+border:none;
+color:white;
+font-size:16px;
+}
+
+#adSection,
+#depositSection,
+#withdrawSection,
+#referralSection{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="logo">Quotex USA</div>
+
+<div class="balance" id="balance">
+$90.00
 </div>
 
-<!-- MARKET SELECT -->
-<div class="market-top">
+<button class="deposit-btn" onclick="showSection('depositSection')">
+Deposit
+</button>
+</div>
 
-<select id="marketSelect">
+<div class="selects">
 
+<select>
+<option>1m</option>
+<option>5m</option>
+<option>15m</option>
+<option>30m</option>
+</select>
+
+<select>
 <option>BTC/USD OTC</option>
 <option>ETH/USD OTC</option>
 <option>TON/USD OTC</option>
-<option>SOL/USD OTC</option>
-<option>XRP/USD OTC</option>
-<option>BNB/USD OTC</option>
-
-</select>
-
-<select id="accountType">
-
-<option value="demo">
-DEMO $10,000
-</option>
-
-<option value="live">
-LIVE ACCOUNT
-</option>
-
 </select>
 
 </div>
 
-<!-- LIVE / DEMO BALANCE -->
-<div class="balances">
+<div class="chart-box" id="chart"></div>
 
-<div class="balance-card">
-<p>Live Balance</p>
-<h2 id="liveBalance">0.00$</h2>
+<div class="trade-box">
+
+<div class="trade-card">
+<h3>Timer</h3>
+<input value="00:01:00">
 </div>
 
-<div class="balance-card">
-<p>Demo Balance</p>
-<h2 id="demoBalance">10000$</h2>
+<div class="trade-card">
+<h3>Investment</h3>
+<input value="100$">
 </div>
 
 </div>
 
-<!-- ADS SYSTEM -->
-<div class="card">
+<div class="buttons">
+<button class="up" onclick="buyTrade()">UP</button>
+<button class="down" onclick="sellTrade()">DOWN</button>
+</div>
+
+<div class="section">
+
+<div id="depositSection" class="card">
+
+<h2>Deposit</h2>
+
+<br>
+
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=USDT_ADDRESS">
+
+<input placeholder="Enter Deposit Amount">
+
+<input type="file">
+
+<button>Confirm Deposit</button>
+
+</div>
+
+<div id="withdrawSection" class="card">
+
+<h2>Withdraw</h2>
+
+<input placeholder="USDT Address">
+
+<input placeholder="Amount">
+
+<button>Withdraw</button>
+
+</div>
+
+<div id="adSection" class="card">
 
 <h2>Watch Ads & Earn</h2>
 
-<h1 id="adsProgress">
-0/100
-</h1>
+<br>
 
-<p>
-1 successful ad = 0.02$
-</p>
+<h3 id="adsCount">0 / 100 Ads</h3>
 
-<button class="ads-btn"
-onclick="openAd()">
+<br>
+
+<button onclick="watchAds()">
 Watch Ads
 </button>
 
 </div>
 
-<!-- REFERRAL -->
-<div class="card">
+<div id="referralSection" class="card">
 
 <h2>Referral</h2>
 
-<div class="ref-box">
-https://quotex-usa.onrender.com/ref/QTX928173
-</div>
+<br>
 
-<p style="margin-top:15px;">
-Referral Reward: 0.10$
-</p>
+<p>Your Reward: $0.10 Per Active Referral</p>
 
-</div>
+<br>
 
-<!-- DEPOSIT -->
-<div class="card">
-
-<h2>USDT TRC20 Deposit</h2>
-
-<img
-class="qr"
-src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
-/>
-
-<div class="wallet">
-TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
-</div>
-
-<p style="margin-top:10px;">
-Minimum Deposit: 10$
-</p>
-
-<input
-id="depositAmount"
-placeholder="Enter Deposit Amount"
-style="
-width:100%;
-height:55px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-padding:15px;
-font-size:18px;
-background:#1e293b;
-color:white;
-"
-/>
-
-<input
-type="file"
-style="
-margin-top:15px;
-color:white;
-"
-/>
-
-<button class="deposit-btn"
-style="
-margin-top:15px;
-width:100%;
-height:55px;
-"
-onclick="confirmDeposit()">
-
-Confirm Deposit
-
-</button>
+<input value="https://t.me/YOUR_BOT?start=ref123">
 
 </div>
 
-<!-- WITHDRAW -->
-<div class="card">
+</div>
 
-<h2>Withdraw USDT</h2>
+<div class="bottom-nav">
 
-<p>
-Minimum Withdrawal: 20$
-</p>
+<button onclick="hideAll()">🏠 Home</button>
 
-<input
-id="withdrawAddress"
-placeholder="Enter USDT Address"
-style="
-width:100%;
-height:55px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-padding:15px;
-font-size:18px;
-background:#1e293b;
-color:white;
-"
-/>
+<button onclick="hideAll()">📈 Market</button>
 
-<input
-id="withdrawAmount"
-placeholder="Withdrawal Amount"
-style="
-width:100%;
-height:55px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-padding:15px;
-font-size:18px;
-background:#1e293b;
-color:white;
-"
-/>
+<button onclick="showSection('depositSection')">💰 Deposit</button>
 
-<button class="sell-btn"
-style="
-margin-top:15px;
-width:100%;
-height:55px;
-"
-onclick="withdrawNow()">
+<button onclick="showSection('adSection')">🎁 Ads</button>
 
-Withdraw
+<button onclick="showSection('referralSection')">👥 Referral</button>
 
-</button>
+<button onclick="showSection('withdrawSection')">💬 Support</button>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 
 <script>
 
-let demoBalance = 10000;
-let liveBalance = 0;
-let adsCount = 0;
+function hideAll(){
+document.getElementById("depositSection").style.display="none";
+document.getElementById("withdrawSection").style.display="none";
+document.getElementById("adSection").style.display="none";
+document.getElementById("referralSection").style.display="none";
+}
 
-let adOpened = false;
-let adReward = 0.02;
+function showSection(id){
+hideAll();
+document.getElementById(id).style.display="block";
+}
 
-function openAd(){
+function buyTrade(){
+alert("BUY Trade Opened");
+}
 
-adOpened = true;
+function sellTrade(){
+alert("SELL Trade Opened");
+}
 
-window.open(
-"https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0",
-"_blank"
-);
+let ads = 0;
+
+function watchAds(){
+
+window.open("https://your-adsterra-link.com","_blank");
 
 setTimeout(()=>{
 
-if(adOpened){
+ads++;
 
-adsCount++;
+document.getElementById("adsCount").innerHTML =
+ads + " / 100 Ads";
 
-liveBalance += adReward;
-
-document.getElementById("adsProgress")
-.innerHTML = adsCount + "/100";
-
-document.getElementById("liveBalance")
-.innerHTML = liveBalance.toFixed(2) + "$";
-
-alert("Ad Completed +0.02$");
+},5000);
 
 }
 
-},15000);
-
-}
-
-window.onfocus = function(){
-
-adOpened = false;
-
-}
-
-function confirmDeposit(){
-
-let amount =
-Number(document.getElementById("depositAmount").value);
-
-if(amount < 10){
-
-alert("Minimum Deposit 10$");
-
-return;
-
-}
-
-liveBalance += amount;
-
-document.getElementById("liveBalance")
-.innerHTML = liveBalance.toFixed(2) + "$";
-
-alert("Deposit Request Sent To Admin Panel");
-
-}
-
-function withdrawNow(){
-
-let amount =
-Number(document.getElementById("withdrawAmount").value);
-
-if(amount < 20){
-
-alert("Minimum Withdrawal 20$");
-
-return;
-
-}
-
-if(amount > liveBalance){
-
-alert("Insufficient Balance");
-
-return;
-
-}
-
-liveBalance -= amount;
-
-document.getElementById("liveBalance")
-.innerHTML = liveBalance.toFixed(2) + "$";
-
-alert("Withdrawal Request Sent");
-
-}
-
-document.getElementById("timeSelect")
-.addEventListener("change", function(){
-
-alert("Trade Time: " + this.value + " seconds");
-
+const chart = LightweightCharts.createChart(document.getElementById('chart'), {
+layout:{
+background:{color:'#08152d'},
+textColor:'#DDD',
+},
+grid:{
+vertLines:{color:'rgba(255,255,255,0.05)'},
+horzLines:{color:'rgba(255,255,255,0.05)'},
+},
+width:window.innerWidth-20,
+height:420
 });
 
-document.getElementById("marketSelect")
-.addEventListener("change", function(){
+const candleSeries = chart.addCandlestickSeries();
 
-alert("Market Changed To: " + this.value);
+let data = [];
 
+let time = Math.floor(Date.now()/1000)-60*50;
+
+let price = 68400;
+
+for(let i=0;i<50;i++){
+
+let open = price;
+let close = open + (Math.random()-0.5)*400;
+
+let high = Math.max(open,close)+100;
+let low = Math.min(open,close)-100;
+
+data.push({
+time:time,
+open:open,
+high:high,
+low:low,
+close:close
 });
 
-document.getElementById("accountType")
-.addEventListener("change", function(){
-
-if(this.value === "demo"){
-
-alert("Demo Account Selected");
-
-}else{
-
-alert("Live Account Selected");
-
+price=close;
+time+=60;
 }
 
-});
+candleSeries.setData(data);
+
+setInterval(()=>{
+
+let last = data[data.length-1];
+
+let open = last.close;
+
+let close = open + (Math.random()-0.5)*300;
+
+let high = Math.max(open,close)+50;
+let low = Math.min(open,close)-50;
+
+let newCandle = {
+time:last.time+60,
+open,
+high,
+low,
+close
+};
+
+data.push(newCandle);
+
+candleSeries.update(newCandle);
+
+},3000);
 
 </script>
 
-<style>
-
-.market-top{
-display:flex;
-gap:10px;
-margin:15px;
-}
-
-.market-top select{
-flex:1;
-height:50px;
-background:#1e293b;
-border:none;
-border-radius:12px;
-color:white;
-padding:10px;
-font-size:16px;
-}
-
-.time-box{
-padding:15px;
-}
-
-.time-box select{
-width:100%;
-height:50px;
-background:#1e293b;
-border:none;
-border-radius:12px;
-padding:10px;
-color:white;
-font-size:18px;
-}
-
-.balances{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-padding:15px;
-}
-
-.balance-card{
-background:#111827;
-padding:20px;
-border-radius:20px;
-}
-
-.balance-card p{
-color:#94a3b8;
-margin-bottom:10px;
-}
-
-.balance-card h2{
-font-size:28px;
-color:#22c55e;
-}
-
-</style>
+</body>
+</html>
