@@ -1,232 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Quotex USA</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
 
 body{
-background:#0B1220;
+background:#0f172a;
 color:white;
-font-family:Arial;
 overflow-x:hidden;
+}
+
+.topbar{
+height:70px;
+background:#111827;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 15px;
+border-bottom:1px solid #1f2937;
+position:fixed;
+top:0;
+left:0;
+right:0;
+z-index:999;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#22c55e;
+}
+
+.balance{
+background:#1e293b;
+padding:10px 15px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+}
+
+.deposit-btn{
+background:#22c55e;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+color:white;
+font-weight:bold;
+font-size:16px;
+}
+
+.chart-area{
+margin-top:70px;
+height:55vh;
+position:relative;
+}
+
+#chart{
+height:100%;
+width:100%;
+}
+
+.market-select{
+position:absolute;
+bottom:15px;
+left:15px;
+background:#111827;
+padding:12px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+}
+
+.trade-box{
+background:#111827;
+padding:15px;
+border-top-left-radius:25px;
+border-top-right-radius:25px;
+margin-top:-10px;
+}
+
+.trade-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:15px;
+}
+
+.input-box{
+background:#1e293b;
+padding:15px;
+border-radius:14px;
+}
+
+.input-box p{
+color:#94a3b8;
+font-size:14px;
+margin-bottom:10px;
+}
+
+.input-box input{
+width:100%;
+background:none;
+border:none;
+color:white;
+font-size:22px;
+outline:none;
+}
+
+.trade-buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;
+}
+
+.buy-btn{
+background:#22c55e;
+border:none;
+height:65px;
+border-radius:15px;
+font-size:28px;
+font-weight:bold;
+color:white;
+}
+
+.sell-btn{
+background:#ef4444;
+border:none;
+height:65px;
+border-radius:15px;
+font-size:28px;
+font-weight:bold;
+color:white;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:#111827;
+border-top:1px solid #1f2937;
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
+}
+
+.nav-btn{
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:14px;
+color:#cbd5e1;
+background:none;
+border:none;
 }
 
 .page{
 display:none;
+padding:90px 15px 90px;
 }
 
-.active{
+.active-page{
 display:block;
 }
 
-.chart-bar{
-width:12px;
+.card{
+background:#111827;
+padding:18px;
 border-radius:20px;
-transition:0.5s;
+margin-bottom:15px;
 }
 
-.bottom-nav{
-backdrop-filter:blur(15px);
+.card h2{
+margin-bottom:15px;
 }
 
-.glow{
-box-shadow:0 0 20px rgba(34,197,94,0.4);
+.wallet{
+word-break:break-all;
+background:#1e293b;
+padding:12px;
+border-radius:12px;
+margin-top:10px;
 }
 
-input{
-outline:none;
+.qr{
+width:180px;
+height:180px;
+margin:auto;
+display:block;
+margin-top:15px;
+border-radius:15px;
 }
 
+.ads-btn{
+width:100%;
+height:60px;
+border:none;
+border-radius:15px;
+background:#2563eb;
+color:white;
+font-size:20px;
+font-weight:bold;
+margin-top:15px;
+}
+
+.ref-box{
+background:#1e293b;
+padding:15px;
+border-radius:15px;
+margin-top:15px;
+}
+
+.support-btn{
+display:block;
+text-decoration:none;
+background:#22c55e;
+padding:15px;
+border-radius:15px;
+text-align:center;
+color:white;
+font-size:20px;
+font-weight:bold;
+margin-top:15px;
+}
+
+.asset{
+display:flex;
+justify-content:space-between;
+padding:15px;
+background:#1e293b;
+border-radius:14px;
+margin-top:10px;
+}
+
+.green{
+color:#22c55e;
+}
+
+.red{
+color:#ef4444;
+}
 </style>
 </head>
 
 <body>
 
-<div class="max-w-md mx-auto pb-28">
+<div class="topbar">
+
+<div class="logo">Quotex USA</div>
+
+<div class="balance">
+$ <span id="balance">90.00</span>
+</div>
+
+<button class="deposit-btn" onclick="showPage('depositPage')">
+Deposit
+</button>
+
+</div>
 
 <!-- HOME -->
-<div id="home" class="page active p-4">
+<div id="homePage" class="active-page">
 
-<div class="bg-[#111827] rounded-3xl p-5 mb-5">
+<div class="chart-area">
+<div id="chart"></div>
 
-<div class="flex justify-between items-center">
-
-<div>
-
-<h1 class="text-3xl font-bold text-green-400">
-Quotex USA
-</h1>
-
-<p class="text-gray-400 mt-1">
-Professional Trading Platform
-</p>
-
+<div class="market-select">
+BTC/USD OTC 92%
+</div>
 </div>
 
-<div class="bg-[#0B1220] px-4 py-2 rounded-2xl">
+<div class="trade-box">
 
-<p class="text-xs text-gray-400">
-UID
-</p>
+<div class="trade-grid">
 
-<p id="uid" class="font-bold">
-QTX0000
-</p>
+<div class="input-box">
+<p>Timer</p>
+<input value="00:01:00">
+</div>
 
+<div class="input-box">
+<p>Investment</p>
+<input value="100$">
 </div>
 
 </div>
 
-<div class="grid grid-cols-2 gap-4 mt-6">
+<div class="trade-buttons">
 
-<div class="bg-[#0B1220] rounded-3xl p-5">
-
-<p class="text-gray-400 text-sm">
-Main Balance
-</p>
-
-<h2 id="mainBalance" class="text-3xl font-bold text-green-400 mt-2">
-$10.00
-</h2>
-
-</div>
-
-<div class="bg-[#0B1220] rounded-3xl p-5">
-
-<p class="text-gray-400 text-sm">
-Ads Balance
-</p>
-
-<h2 id="adsBalance" class="text-3xl font-bold text-yellow-400 mt-2">
-$0.00
-</h2>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="bg-[#111827] rounded-3xl p-5">
-
-<h2 class="text-2xl font-bold mb-5">
-Live Market Assets
-</h2>
-
-<div class="space-y-3">
-
-<div class="bg-[#0B1220] rounded-2xl p-4 flex justify-between">
-
-<div>
-<p class="font-bold">BTC/USD</p>
-<p class="text-gray-400 text-sm">Crypto</p>
-</div>
-
-<div class="text-right">
-
-<p id="btcPrice" class="font-bold">
-$68420
-</p>
-
-<p id="btcChange" class="text-green-400">
-+2.14%
-</p>
-
-</div>
-
-</div>
-
-<div class="bg-[#0B1220] rounded-2xl p-4 flex justify-between">
-
-<div>
-<p class="font-bold">ETH/USD</p>
-<p class="text-gray-400 text-sm">Crypto</p>
-</div>
-
-<div class="text-right">
-
-<p id="ethPrice" class="font-bold">
-$3520
-</p>
-
-<p id="ethChange" class="text-green-400">
-+1.82%
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TRADE -->
-<div id="trade" class="page p-4">
-
-<div class="bg-[#111827] rounded-3xl p-5">
-
-<div class="flex justify-between items-center mb-5">
-
-<div>
-
-<h2 class="text-3xl font-bold">
-BTC/USD
-</h2>
-
-<p id="livePrice" class="text-green-400 text-2xl mt-1">
-$68420.50
-</p>
-
-</div>
-
-<div class="text-right">
-
-<p class="text-gray-400 text-sm">
-Profit
-</p>
-
-<p class="text-green-400 text-2xl font-bold">
-+92%
-</p>
-
-</div>
-
-</div>
-
-<p id="marketStatus" class="text-green-400 font-bold mb-4">
-Market Up ▲
-</p>
-
-<!-- LIVE CHART -->
-<div
-id="chart"
-class="bg-[#0B1220] rounded-3xl h-72 flex items-end justify-center gap-2 p-5 overflow-hidden"
->
-
-</div>
-
-<div class="grid grid-cols-2 gap-4 mt-5">
-
-<button
-onclick="buyTrade()"
-class="bg-green-500 glow py-5 rounded-3xl text-xl font-bold"
->
-BUY / UP
+<button class="buy-btn" onclick="buyTrade()">
+UP
 </button>
 
-<button
-onclick="sellTrade()"
-class="bg-red-500 py-5 rounded-3xl text-xl font-bold"
->
-SELL / DOWN
+<button class="sell-btn" onclick="sellTrade()">
+DOWN
 </button>
 
 </div>
@@ -235,444 +317,284 @@ SELL / DOWN
 
 </div>
 
-<!-- WALLET -->
-<div id="wallet" class="page p-4">
+<!-- MARKET -->
+<div id="marketPage" class="page">
 
-<div class="bg-[#111827] rounded-3xl p-5 mb-5">
+<div class="card">
+<h2>Trading Markets</h2>
 
-<h2 class="text-3xl font-bold mb-5">
-USDT Deposit
-</h2>
+<div class="asset">
+<div>BTC/USD</div>
+<div class="green">+2.10%</div>
+</div>
 
-<p class="text-gray-400 mb-3">
-Minimum Deposit: $10
-</p>
+<div class="asset">
+<div>ETH/USD</div>
+<div class="green">+1.84%</div>
+</div>
 
-<img
-src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
-class="rounded-3xl mx-auto"
-/>
+<div class="asset">
+<div>TON/USD</div>
+<div class="green">+4.12%</div>
+</div>
 
-<p class="text-center mt-5 text-gray-400">
-TRC20 Wallet Address
-</p>
+<div class="asset">
+<div>SOL/USD</div>
+<div class="red">-1.45%</div>
+</div>
 
-<div class="bg-[#0B1220] p-4 rounded-2xl mt-4 break-all text-center">
+<div class="asset">
+<div>XRP/USD</div>
+<div class="green">+6.50%</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- DEPOSIT -->
+<div id="depositPage" class="page">
+
+<div class="card">
+
+<h2>USDT TRC20 Deposit</h2>
+
+<img class="qr"
+src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy">
+
+<div class="wallet">
 TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy
 </div>
 
-<button
-onclick="copyWallet()"
-class="w-full bg-green-500 py-4 rounded-2xl mt-5 text-xl font-bold"
->
-Copy Address
-</button>
-
-</div>
-
-<div class="bg-[#111827] rounded-3xl p-5 mb-5">
-
-<h2 class="text-2xl font-bold mb-4">
-Deposit Screenshot
-</h2>
-
-<input
-type="file"
-class="w-full bg-[#0B1220] p-4 rounded-2xl"
-/>
-
-<button
-onclick="depositConfirm()"
-class="w-full bg-blue-500 py-4 rounded-2xl mt-5 text-xl font-bold"
->
-Confirm Deposit
-</button>
-
-</div>
-
-<div class="bg-[#111827] rounded-3xl p-5">
-
-<h2 class="text-2xl font-bold mb-5">
-Withdraw
-</h2>
-
-<p class="text-gray-400 mb-3">
-Minimum Withdrawal: $20
+<p style="margin-top:15px;color:#94a3b8;">
+Minimum Deposit: 10$
 </p>
 
-<input
-id="withdrawAddress"
-placeholder="Enter USDT Address"
-class="w-full bg-[#0B1220] p-4 rounded-2xl mb-4"
-/>
-
-<input
-id="withdrawAmount"
-type="number"
-placeholder="Amount USD"
-class="w-full bg-[#0B1220] p-4 rounded-2xl"
-/>
-
-<button
-onclick="withdrawRequest()"
-class="w-full bg-red-500 py-4 rounded-2xl mt-5 text-xl font-bold"
->
-Withdraw Request
-</button>
-
 </div>
 
 </div>
 
-<!-- EARN -->
-<div id="earn" class="page p-4">
+<!-- ADS -->
+<div id="adsPage" class="page">
 
-<div class="bg-[#111827] rounded-3xl p-5 mb-5">
+<div class="card">
 
-<h2 class="text-3xl font-bold mb-5">
-Watch Ads & Earn
-</h2>
+<h2>Watch Ads & Earn</h2>
 
-<div class="bg-[#0B1220] rounded-3xl p-5">
-
-<p class="text-gray-400">
-Today's Progress
+<p>
+Complete ads and earn USD balance.
 </p>
 
-<h2 id="adsCount" class="text-5xl font-bold text-green-400 mt-3">
-0 / 100
-</h2>
+<h1 style="margin-top:20px;">
+<span id="adsCount">0</span>/100
+</h1>
 
-<p class="text-gray-400 mt-4">
-1 Ads = $0.02
-</p>
-
-<a
-href="https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0"
-target="_blank"
->
-<button
-onclick="watchAds()"
-class="w-full bg-green-500 py-5 rounded-3xl text-2xl font-bold mt-6"
->
+<button class="ads-btn" onclick="watchAds()">
 Watch Ads
 </button>
-</a>
 
 </div>
 
 </div>
 
-<div class="bg-[#111827] rounded-3xl p-5">
+<!-- REFERRAL -->
+<div id="refPage" class="page">
 
-<h2 class="text-3xl font-bold mb-5">
-Referral System
-</h2>
+<div class="card">
 
-<p class="text-gray-400">
-1 Invite = $0.10
-</p>
+<h2>Referral System</h2>
 
-<div
-id="refLink"
-class="bg-[#0B1220] p-4 rounded-2xl mt-5 break-all"
->
-https://quotex-usa.onrender.com/?ref=QTX0000
+<p>Invite friends and earn 0.10$</p>
+
+<div class="ref-box">
+https://quotexusa.com/ref/QTX928173
 </div>
-
-<button
-onclick="copyReferral()"
-class="w-full bg-yellow-500 py-4 rounded-2xl mt-5 text-xl font-bold"
->
-Copy Referral Link
-</button>
 
 </div>
 
 </div>
 
-<!-- PROFILE -->
-<div id="profile" class="page p-4">
+<!-- SUPPORT -->
+<div id="supportPage" class="page">
 
-<div class="bg-[#111827] rounded-3xl p-5">
+<div class="card">
 
-<h2 class="text-3xl font-bold mb-5">
-Customer Support
-</h2>
+<h2>Customer Support</h2>
 
-<a
-href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a"
-target="_blank"
->
-<button
-class="w-full bg-green-500 py-5 rounded-3xl text-2xl font-bold"
->
+<a class="support-btn"
+href="https://whatsapp.com/channel/0029VbCvfzcAojYu4HJSKn3a">
 WhatsApp Support
-</button>
 </a>
-
-</div>
 
 </div>
 
 </div>
 
 <!-- BOTTOM NAV -->
-<div
-class="bottom-nav fixed bottom-0 left-0 right-0 bg-[#111827]/90 border-t border-gray-800"
->
+<div class="bottom-nav">
 
-<div class="max-w-md mx-auto flex justify-around p-4 text-sm">
-
-<button onclick="showPage('home')" class="text-green-400">
-🏠<br>Home
+<button class="nav-btn" onclick="showPage('homePage')">
+🏠
+Home
 </button>
 
-<button onclick="showPage('trade')" class="text-gray-400">
-📈<br>Trade
+<button class="nav-btn" onclick="showPage('marketPage')">
+📈
+Market
 </button>
 
-<button onclick="showPage('wallet')" class="text-gray-400">
-💰<br>Wallet
+<button class="nav-btn" onclick="showPage('depositPage')">
+💰
+Deposit
 </button>
 
-<button onclick="showPage('earn')" class="text-gray-400">
-🎁<br>Earn
+<button class="nav-btn" onclick="showPage('adsPage')">
+🎁
+Ads
 </button>
 
-<button onclick="showPage('profile')" class="text-gray-400">
-👤<br>Profile
+<button class="nav-btn" onclick="showPage('refPage')">
+👥
+Referral
 </button>
 
-</div>
+<button class="nav-btn" onclick="showPage('supportPage')">
+💬
+Support
+</button>
 
 </div>
 
 <script>
 
-let mainBalance = 10;
-let adsBalance = 0;
+function showPage(id){
+
+document.getElementById('homePage').classList.remove('active-page');
+document.getElementById('marketPage').classList.remove('active-page');
+document.getElementById('depositPage').classList.remove('active-page');
+document.getElementById('adsPage').classList.remove('active-page');
+document.getElementById('refPage').classList.remove('active-page');
+document.getElementById('supportPage').classList.remove('active-page');
+
+document.getElementById(id).classList.add('active-page');
+
+}
+
 let ads = 0;
-
-let livePrice = 68420.50;
-
-const uid =
-"QTX" + Math.floor(Math.random()*99999999);
-
-document.getElementById("uid").innerText = uid;
-
-document.getElementById("refLink").innerText =
-"https://quotex-usa.onrender.com/?ref=" + uid;
-
-function showPage(page){
-
-document.querySelectorAll('.page').forEach(p=>{
-p.classList.remove('active');
-});
-
-document.getElementById(page).classList.add('active');
-
-}
-
-function updateBalance(){
-
-document.getElementById("mainBalance").innerText =
-"$" + mainBalance.toFixed(2);
-
-document.getElementById("adsBalance").innerText =
-"$" + adsBalance.toFixed(2);
-
-}
-
-function generateChart(){
-
-const chart =
-document.getElementById("chart");
-
-chart.innerHTML = "";
-
-for(let i=0;i<18;i++){
-
-let height =
-Math.floor(Math.random()*180)+40;
-
-let color =
-Math.random() > 0.5
-? "bg-green-500"
-: "bg-red-500";
-
-chart.innerHTML += `
-<div
-class="chart-bar ${color}"
-style="height:${height}px"
-></div>
-`;
-
-}
-
-}
-
-function updateMarket(){
-
-let change =
-(Math.random()*200)-100;
-
-livePrice += change;
-
-if(livePrice < 1000){
-livePrice = 68420;
-}
-
-document.getElementById("livePrice").innerText =
-"$" + livePrice.toFixed(2);
-
-document.getElementById("btcPrice").innerText =
-"$" + livePrice.toFixed(2);
-
-document.getElementById("ethPrice").innerText =
-"$" + (livePrice/20).toFixed(2);
-
-if(change > 0){
-
-document.getElementById("marketStatus").innerText =
-"Market Up ▲";
-
-document.getElementById("marketStatus").style.color =
-"#22c55e";
-
-}else{
-
-document.getElementById("marketStatus").innerText =
-"Market Down ▼";
-
-document.getElementById("marketStatus").style.color =
-"#ef4444";
-
-}
-
-generateChart();
-
-}
-
-setInterval(updateMarket,2000);
-
-generateChart();
-
-function buyTrade(){
-
-if(mainBalance < 10){
-
-alert("Minimum trading balance is $10");
-return;
-
-}
-
-let win = Math.random() > 0.5;
-
-if(win){
-
-mainBalance += 5;
-alert("Trade Win +$5");
-
-}else{
-
-mainBalance -= 5;
-alert("Trade Loss -$5");
-
-}
-
-updateBalance();
-
-}
-
-function sellTrade(){
-
-if(mainBalance < 10){
-
-alert("Minimum trading balance is $10");
-return;
-
-}
-
-let win = Math.random() > 0.5;
-
-if(win){
-
-mainBalance += 5;
-alert("Trade Win +$5");
-
-}else{
-
-mainBalance -= 5;
-alert("Trade Loss -$5");
-
-}
-
-updateBalance();
-
-}
-
-function copyWallet(){
-
-navigator.clipboard.writeText(
-"TEjTJkW6WJBg9fPkDSAVTdiU7t3pdVpPmy"
-);
-
-alert("Wallet Address Copied");
-
-}
-
-function depositConfirm(){
-
-alert("Deposit Request Submitted");
-
-}
-
-function withdrawRequest(){
-
-let amount =
-document.getElementById("withdrawAmount").value;
-
-if(amount < 20){
-
-alert("Minimum withdrawal is $20");
-return;
-
-}
-
-alert("Withdrawal Request Sent");
-
-}
+let balance = 90;
 
 function watchAds(){
 
-if(ads >= 100){
-
-alert("Daily Limit Reached");
-return;
-
-}
+window.open(
+"https://www.effectivecpmnetwork.com/axxe4pitp?key=5c32c5e18f9ad7f0378955eafebfbac0",
+"_blank"
+);
 
 ads++;
 
-adsBalance += 0.02;
+balance += 0.02;
 
-document.getElementById("adsCount").innerText =
-ads + " / 100";
-
-updateBalance();
+document.getElementById("adsCount").innerHTML = ads;
+document.getElementById("balance").innerHTML = balance.toFixed(2);
 
 }
 
-function copyReferral(){
+function buyTrade(){
+alert("BUY Trade Opened");
+}
 
-navigator.clipboard.writeText(
-document.getElementById("refLink").innerText
+function sellTrade(){
+alert("SELL Trade Opened");
+}
+
+const chart = LightweightCharts.createChart(
+document.getElementById('chart'),
+{
+layout:{
+background:{color:'#0f172a'},
+textColor:'#ffffff',
+},
+grid:{
+vertLines:{color:'#1e293b'},
+horzLines:{color:'#1e293b'},
+},
+width:window.innerWidth,
+height:window.innerHeight * 0.55,
+crosshair:{
+mode:0,
+},
+rightPriceScale:{
+borderColor:'#334155',
+},
+timeScale:{
+borderColor:'#334155',
+},
+}
 );
 
-alert("Referral Link Copied");
+const candleSeries = chart.addCandlestickSeries({
+upColor:'#22c55e',
+downColor:'#ef4444',
+borderVisible:false,
+wickUpColor:'#22c55e',
+wickDownColor:'#ef4444',
+});
+
+const data = [];
+
+let time = 1;
+let price = 68500;
+
+for(let i=0;i<80;i++){
+
+let open = price;
+
+let close = open + (Math.random()-0.5)*500;
+
+let high = Math.max(open, close)+Math.random()*200;
+
+let low = Math.min(open, close)-Math.random()*200;
+
+data.push({
+time,
+open,
+high,
+low,
+close
+});
+
+price = close;
+time++;
 
 }
+
+candleSeries.setData(data);
+
+setInterval(()=>{
+
+let last = data[data.length-1];
+
+let open = last.close;
+
+let close = open + (Math.random()-0.5)*500;
+
+let high = Math.max(open, close)+Math.random()*200;
+
+let low = Math.min(open, close)-Math.random()*200;
+
+const newCandle = {
+time:last.time + 1,
+open,
+high,
+low,
+close
+};
+
+data.push(newCandle);
+
+candleSeries.update(newCandle);
+
+},2000);
 
 </script>
 
